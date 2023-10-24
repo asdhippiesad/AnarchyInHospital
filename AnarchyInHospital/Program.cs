@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AnarchyInHospital
 {
@@ -58,15 +59,15 @@ namespace AnarchyInHospital
                 switch (Console.ReadLine())
                 {
                     case ShowNameCommand:
-                        ShowPatientName();
+                        SortPatientsByName();
                         break;
 
                     case ShowAgeCommand:
-                        ShowPatientAge();
+                        SortPatientsByAge();
                         break;
 
                     case ShowDiagnosisCommand:
-                        ShowPatientDisease();
+                        ShowPatientsDiagnosis();
                         break;
 
                     case ExtitCommand:
@@ -79,7 +80,7 @@ namespace AnarchyInHospital
             }
         }
 
-        private void ShowPatientName()
+        private void SortPatientsByName()
         {
             var fiteredFullName = _patients.OrderBy(patient => patient.FullName).ToList();
 
@@ -89,26 +90,34 @@ namespace AnarchyInHospital
             }
         }
 
-        private void ShowPatientAge()
+        private void SortPatientsByAge()
         {
-            var filteredAge = _patients.OrderBy(patient => patient.Age).ToList();
+            _patients = _patients.OrderBy(patient => patient.Age).ToList();
 
-            foreach (var patient in filteredAge)
-            {
-                patient.ShowInfo();
-            }
+            Show(_patients);
         }
 
-        private void ShowPatientDisease()
+        private void ShowPatientsDiagnosis()
         {
             Console.Write("Введите диагноз: ");
             string disease = Console.ReadLine();
 
-            var filteredDisease = _patients.Where(patient => patient.Diagnosis.StartsWith(disease));
+            var filteredDisease = _patients.Where(patient => patient.Diagnosis.ToLower() == disease.ToLower());
 
             foreach (var diagnosis in filteredDisease)
             {
                 diagnosis.ShowInfo();
+            }
+        }
+
+        private void Show(List<Patient> patients)
+        {
+            if (_patients.Any())
+            {
+                foreach (Patient patient in patients)
+                {
+                    patient.ShowInfo();
+                }
             }
         }
     }
