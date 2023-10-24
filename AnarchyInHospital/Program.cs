@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AnarchyInHospital
 {
@@ -59,15 +58,15 @@ namespace AnarchyInHospital
                 switch (Console.ReadLine())
                 {
                     case ShowNameCommand:
-                        SortPatientsByName();
+                        Show(ShowSortedPatientNames());
                         break;
 
                     case ShowAgeCommand:
-                        SortPatientsByAge();
+                        Show(ShowSortPatientsByAge());
                         break;
 
                     case ShowDiagnosisCommand:
-                        ShowPatientsDiagnosis();
+                        ShowPatientWithDisease();
                         break;
 
                     case ExtitCommand:
@@ -80,29 +79,22 @@ namespace AnarchyInHospital
             }
         }
 
-        private void SortPatientsByName()
+        private List<Patient> ShowSortedPatientNames()
         {
-            var fiteredFullName = _patients.OrderBy(patient => patient.FullName).ToList();
-
-            foreach (var patient in fiteredFullName)
-            {
-                patient.ShowInfo();
-            }
+            return _patients = _patients.OrderBy(patient => patient.FullName).ToList();
         }
 
-        private void SortPatientsByAge()
+        private List<Patient> ShowSortPatientsByAge()
         {
-            _patients = _patients.OrderBy(patient => patient.Age).ToList();
-
-            Show(_patients);
+            return _patients = _patients.OrderBy(patient => patient.Age).ToList();
         }
 
-        private void ShowPatientsDiagnosis()
+        private void ShowPatientWithDisease()
         {
             Console.Write("Введите диагноз: ");
             string disease = Console.ReadLine();
 
-            var filteredDisease = _patients.Where(patient => patient.Diagnosis.ToLower() == disease.ToLower());
+            var filteredDisease = _patients.Where(patient => patient.Diagnosis.StartsWith(disease));
 
             foreach (var diagnosis in filteredDisease)
             {
