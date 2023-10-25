@@ -62,7 +62,7 @@ namespace AnarchyInHospital
                         break;
 
                     case ShowAgeCommand:
-                        Show(GetSortPatientsByAge());
+                        Show(GetSortedPatientsByAge());
                         break;
 
                     case ShowDiagnosisCommand:
@@ -82,7 +82,7 @@ namespace AnarchyInHospital
         private IEnumerable<Patient> GetSortedPatientNames() =>
            _patients = _patients.OrderBy(patient => patient.FullName);
 
-        private IEnumerable<Patient> GetSortPatientsByAge() =>
+        private IEnumerable<Patient> GetSortedPatientsByAge() =>
              _patients = _patients.OrderBy(patient => patient.Age);
 
         private void FoundPatientWithDisease()
