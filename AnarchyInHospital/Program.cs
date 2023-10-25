@@ -18,7 +18,7 @@ namespace AnarchyInHospital
 
     class Hospital
     {
-        private List<Patient> _patients;
+        private IEnumerable<Patient> _patients = new List<Patient>();
 
         public Hospital()
         {
@@ -58,15 +58,15 @@ namespace AnarchyInHospital
                 switch (Console.ReadLine())
                 {
                     case ShowNameCommand:
-                        Show(ShowSortedPatientNames());
+                        Show(GetSortedPatientNames());
                         break;
 
                     case ShowAgeCommand:
-                        Show(ShowSortPatientsByAge());
+                        Show(GetSortPatientsByAge());
                         break;
 
                     case ShowDiagnosisCommand:
-                        ShowPatientWithDisease();
+                        FoundPatientWithDisease();
                         break;
 
                     case ExtitCommand:
@@ -79,30 +79,26 @@ namespace AnarchyInHospital
             }
         }
 
-        private List<Patient> ShowSortedPatientNames()
-        {
-            return _patients = _patients.OrderBy(patient => patient.FullName).ToList();
-        }
+        private IEnumerable<Patient> GetSortedPatientNames() =>
+           _patients = _patients.OrderBy(patient => patient.FullName);
 
-        private List<Patient> ShowSortPatientsByAge()
-        {
-            return _patients = _patients.OrderBy(patient => patient.Age).ToList();
-        }
+        private IEnumerable<Patient> GetSortPatientsByAge() =>
+             _patients = _patients.OrderBy(patient => patient.Age);
 
-        private void ShowPatientWithDisease()
+        private void FoundPatientWithDisease()
         {
             Console.Write("Введите диагноз: ");
             string disease = Console.ReadLine();
 
-            var filteredDisease = _patients.Where(patient => patient.Diagnosis.StartsWith(disease));
+            IEnumerable<Patient> foundPatient = _patients.Where(patient => patient.Diagnosis.StartsWith(disease));
 
-            foreach (var diagnosis in filteredDisease)
+            foreach (var diagnosis in foundPatient)
             {
                 diagnosis.ShowInfo();
             }
         }
 
-        private void Show(List<Patient> patients)
+        private void Show(IEnumerable<Patient> patients)
         {
             if (_patients.Any())
             {
